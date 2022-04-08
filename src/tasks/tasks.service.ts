@@ -6,11 +6,13 @@ import { Task } from "./tasks.model";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { StudyMaterialDto } from "../study-materials/dto/sm.dto";
 import { TaskTypesEnum } from "./enums/task-types.enum";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
 
 @Injectable()
 export class TasksService {
 
-  constructor(@InjectModel(Task) private tasksRepository: typeof Task) {}
+  constructor(@InjectRepository(Task) private tasksRepository: Repository<Task>) {}
 
   async createTemplate(dto: CreateTaskDto) {
     if (dto.type === TaskTypesEnum.NOT_GENERATED_TEST && !dto.answers) {
@@ -20,15 +22,15 @@ export class TasksService {
       throw new BadRequestException({message: "Field right_answers is required in this type"})
     }
 
-    return await this.tasksRepository.create(dto)
+    return this.tasksRepository.create(dto)
   }
 
   async getAllTemplates() {
-    return await this.tasksRepository.findAll()
+    return await this.tasksRepository.find()
   }
 
   async getTemplateById(id: number) {
-    const template = await this.tasksRepository.findByPk(id)
+    const template = await this.tasksRepository.findOneBy({id})
     if(!template) {
       throw new BadRequestException({message: "Template was not found"})
     }
@@ -37,29 +39,31 @@ export class TasksService {
 
   async getTemplateByLangAndSection(language: string, section: string) {
     if(language !== 'all' && section !== 'all')
-      return await this.tasksRepository.findAll({where: {language, section}})
+      return await this.tasksRepository.find({where: {language, section}})
     if(language === 'all' && section !== 'all')
-      return await this.tasksRepository.findAll({where: {section}})
+      return await this.tasksRepository.find({where: {section}})
     if(language !== 'all' && section === 'all')
-      return await this.tasksRepository.findAll({where: {language}})
+      return await this.tasksRepository.find({where: {language}})
     if(language === 'all' && section === 'all')
-      return await this.tasksRepository.findAll()
+      return await this.tasksRepository.find()
   }
 
   async getGeneratedById(id: number) {
-    return TaskGenerator.generate(await this.tasksRepository.findByPk(id))
+    await this.tasksRepository.findOneBy({id}).then(task =>{
+      return TaskGenerator.generate(task)
+    })
   }
 
   async getGeneratedByLangAndSection(language: string, section: string) {
     let templates: Task[]
     if(language !== 'all' && section !== 'all')
-      templates = await this.tasksRepository.findAll({where: {language, section}})
+      templates = await this.tasksRepository.find({where: {language, section}})
     if(language === 'all' && section !== 'all')
-      templates = await this.tasksRepository.findAll({where: {section}})
+      templates = await this.tasksRepository.find({where: {section}})
     if(language !== 'all' && section === 'all')
-      templates = await this.tasksRepository.findAll({where: {language}})
+      templates = await this.tasksRepository.find({where: {language}})
     if(language === 'all' && section === 'all')
-      templates = await this.tasksRepository.findAll()
+      templates = await this.tasksRepository.find()
 
     let tasks: TaskTemplateInterface[] = []
 
@@ -69,15 +73,15 @@ export class TasksService {
   }
 
   async updateTemplate(dto: CreateTaskDto, id: number) {
-    const sm = await this.tasksRepository.findByPk(id)
+    const sm = await this.tasksRepository.findOneBy({id})
     if(!sm) {
       throw new NotFoundException({message: 'Template was not found'})
     }
-    return await this.tasksRepository.update(dto, {where: {id}})
+    return await this.tasksRepository.save({id, ...dto})
   }
 
   async deleteTemplate(id: number) {
-    const sm = await this.tasksRepository.destroy({where: {id}})
+    const sm = await this.tasksRepository.delete({id})
     if(!sm) {
       throw new NotFoundException({message: 'Formula was not found'})
     }

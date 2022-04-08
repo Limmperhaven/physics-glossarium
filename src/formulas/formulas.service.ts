@@ -3,22 +3,24 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Formula } from "./formulas.model";
 import { CreateFormulaDto } from "./dto/create-formula.dto";
 import { CreateDefinitionDto } from "../definitions/dto/create-definition.dto";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
 
 @Injectable()
 export class FormulasService {
 
-  constructor(@InjectModel(Formula) private formulasRepository: typeof Formula) {}
+  constructor(@InjectRepository(Formula) private formulasRepository: Repository<Formula>) {}
 
   async getAll() {
-    return await this.formulasRepository.findAll()
+    return await this.formulasRepository.find()
   }
 
   async getByLang(language: string) {
-    return await this.formulasRepository.findAll({where: {language}})
+    return await this.formulasRepository.findBy({language})
   }
 
   async getById(id: number) {
-    const formula = await this.formulasRepository.findByPk(id)
+    const formula = await this.formulasRepository.findOneBy({id})
     if(!formula) {
       throw new NotFoundException({message: "Formula was not found"})
     }
@@ -26,19 +28,19 @@ export class FormulasService {
   }
 
   async create(dto: CreateFormulaDto) {
-    return await this.formulasRepository.create(dto)
+    return this.formulasRepository.create(dto)
   }
 
   async update(dto: CreateFormulaDto, id: number) {
-    const formula = await this.formulasRepository.findByPk(id)
+    const formula = await this.formulasRepository.findOneBy({id})
     if(!formula) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
-    return await this.formulasRepository.update(dto, {where: {id}})
+    return await this.formulasRepository.save({id, ...dto})
   }
 
   async delete(id: number) {
-    const formula = await this.formulasRepository.destroy({where: {id}})
+    const formula = await this.formulasRepository.delete({id})
     if(!formula) {
       throw new NotFoundException({message: 'Formula was not found'})
     }

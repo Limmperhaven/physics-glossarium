@@ -4,12 +4,14 @@ import { TasksService } from './tasks.service';
 import { SequelizeModule } from "@nestjs/sequelize";
 import { StudyMaterial } from "../study-materials/study-materials.model";
 import { Task } from "./tasks.model";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Term} from "../terms/terms.model";
 
 @Module({
   controllers: [TasksController],
   providers: [TasksService],
   imports: [
-    SequelizeModule.forFeature([Task])
+    TypeOrmModule.forFeature([Task])
   ]
 })
 export class TasksModule {}

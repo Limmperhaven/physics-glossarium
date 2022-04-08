@@ -4,12 +4,14 @@ import { FormulasService } from './formulas.service';
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Definition } from "../definitions/definitions.model";
 import { Formula } from "./formulas.model";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Term} from "../terms/terms.model";
 
 @Module({
   controllers: [FormulasController],
   providers: [FormulasService],
   imports: [
-    SequelizeModule.forFeature([Formula])
+    TypeOrmModule.forFeature([Formula])
   ]
 })
 export class FormulasModule {}

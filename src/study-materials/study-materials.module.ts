@@ -4,12 +4,14 @@ import { StudyMaterialsService } from './study-materials.service';
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Formula } from "../formulas/formulas.model";
 import { StudyMaterial } from "./study-materials.model";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Term} from "../terms/terms.model";
 
 @Module({
   controllers: [StudyMaterialsController],
   providers: [StudyMaterialsService],
   imports: [
-    SequelizeModule.forFeature([StudyMaterial])
+    TypeOrmModule.forFeature([StudyMaterial])
   ]
 })
 export class StudyMaterialsModule {}

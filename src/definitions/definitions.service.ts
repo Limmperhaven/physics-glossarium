@@ -2,22 +2,24 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestj
 import { InjectModel } from "@nestjs/sequelize";
 import { Definition } from "./definitions.model";
 import { CreateDefinitionDto } from "./dto/create-definition.dto";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
 
 @Injectable()
 export class DefinitionsService {
 
-  constructor(@InjectModel(Definition) private definitionsRepository: typeof Definition) {}
+  constructor(@InjectRepository(Definition) private definitionsRepository: Repository<Definition>) {}
 
   async getAllDefinitions() {
-    return await this.definitionsRepository.findAll()
+    return await this.definitionsRepository.find()
   }
 
   async getDefinitionsByLang(language: string) {
-    return await this.definitionsRepository.findAll({where: {language}})
+    return await this.definitionsRepository.findBy({language})
   }
 
   async getDefinitionById(id: number) {
-    const definition = await this.definitionsRepository.findByPk(id)
+    const definition = await this.definitionsRepository.findOneBy({id})
     if(!definition) {
       throw new NotFoundException({message: "Definition was not found"})
     }
@@ -25,19 +27,19 @@ export class DefinitionsService {
   }
 
   async createDefinition(dto: CreateDefinitionDto) {
-    return await this.definitionsRepository.create(dto)
+    return this.definitionsRepository.create(dto)
   }
 
   async updateDefinition(dto: CreateDefinitionDto, id: number) {
-    const definition = await this.definitionsRepository.findByPk(id)
+    const definition = await this.definitionsRepository.findOneBy({id})
     if(!definition) {
       throw new NotFoundException({message: 'Definition was not found'})
     }
-    return await this.definitionsRepository.update(dto, {where: {id}})
+    return this.definitionsRepository.save({id, ...dto});
   }
 
   async deleteDefinition(id: number) {
-    const destroy = await this.definitionsRepository.destroy({where: {id}})
+    const destroy = await this.definitionsRepository.delete(id)
     if(!destroy) {
       throw new NotFoundException({message: 'Definition was not found'})
     }

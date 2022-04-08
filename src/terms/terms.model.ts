@@ -1,34 +1,28 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {DataType} from "sequelize-typescript";
 
-interface TermCreationAttrs {
-  name_rus: string
-  name_lang: string
-  language: string
-  section: string
-}
-
-@Table({tableName: 'terms'})
-export class Term extends Model<Term, TermCreationAttrs> {
+@Entity('terms')
+export class Term {
 
   @ApiProperty({example: 1, description: 'Уникальный id термина'})
-  @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
+  @PrimaryGeneratedColumn()
   id: number
 
   @ApiProperty({example: 'ExampleName', description: 'Имя термина на русском'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_rus: string
 
   @ApiProperty({example: 'ExampleName', description: 'Имя термина на языке'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_lang: string
 
   @ApiProperty({example: 'ExampleLanguage', description: 'Язык термина'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   language: string
 
   @ApiProperty({example: 'ExampleSection', description: 'Раздел'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   section: string
 
 }

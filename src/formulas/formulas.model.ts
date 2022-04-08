@@ -1,48 +1,40 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {DataType} from "sequelize-typescript";
 
-interface FormulaCreationAttrs {
-  name_rus: string
-  name_lang: string
-  value: string
-  comment_rus: string
-  comment_lang: string
-  section: string
-}
-
-@Table({tableName: 'formulas'})
-export class Formula extends Model<Formula, FormulaCreationAttrs> {
+@Entity('formulas')
+export class Formula {
 
   @ApiProperty({example: 1, description: 'Уникальный id формулы'})
-  @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
+  @PrimaryGeneratedColumn()
   id: number
 
   @ApiProperty({example: 'ExampleName', description: 'Имя формулы на русском'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_rus: string
 
   @ApiProperty({example: 'ExampleName', description: 'Имя формулы на языке'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_lang: string
 
   @ApiProperty({example: 'ExampleValue', description: 'Тело формулы'})
-  @Column({type: DataType.TEXT, allowNull: false})
+  @Column("text")
   value: string
 
   @ApiProperty({example: 'ExampleComment', description: 'Комментарий на русском'})
-  @Column({type: DataType.TEXT, allowNull: true})
+  @Column("text", {nullable: true})
   comment_rus: string
 
   @ApiProperty({example: 'ExampleComment', description: 'Комментарий на языке'})
-  @Column({type: DataType.TEXT, allowNull: true})
+  @Column("text", {nullable: true})
   comment_lang: string
 
   @ApiProperty({example: 'ExampleLanguage', description: 'Язык формулы'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   language: string
 
   @ApiProperty({example: 'ExampleSection', description: 'Раздел'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   section: string
 
 }

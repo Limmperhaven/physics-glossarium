@@ -1,49 +1,40 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
+import {Column, Entity, PrimaryGeneratedColumn, Table} from "typeorm";
+import {DataType} from "sequelize-typescript";
 
-interface StudyMaterialCreationAttrs {
-  name_lang: string
-  name_rus: string
-  purpose_lang: string
-  purpose_rus: string
-  link: string
-  language: string
-  section: string
-}
-
-@Table({tableName: 'study_materials'})
-export class StudyMaterial extends Model<StudyMaterial, StudyMaterialCreationAttrs> {
+@Entity('study_materials')
+export class StudyMaterial {
 
   @ApiProperty({example: 1, description: 'Уникальный id учебного материала'})
-  @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
+  @PrimaryGeneratedColumn()
   id: number
 
   @ApiProperty({example: 'ExampleName', description: 'Имя на языке'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_lang: string
 
   @ApiProperty({example: 'ExampleName', description: 'Имя на русском'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   name_rus: string
 
   @ApiProperty({example: 'ExamplePurpose', description: 'Назначение на языке'})
-  @Column({type: DataType.TEXT, allowNull: false})
+  @Column("text")
   purpose_lang: string
 
   @ApiProperty({example: 'ExamplePurpose', description: 'Назначение на русском'})
-  @Column({type: DataType.TEXT, allowNull: false})
+  @Column("text")
   purpose_rus: string
 
   @ApiProperty({example: 'https://youtube.com/', description: 'Ссылка на учебный материал'})
-  @Column({type: DataType.TEXT, allowNull: false})
+  @Column("text")
   link: string
 
   @ApiProperty({example: 'ExampleLanguage', description: 'Язык учебного материала'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   language: string
 
   @ApiProperty({example: 'ExampleSection', description: 'Раздел'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column()
   section: string
 
 }
