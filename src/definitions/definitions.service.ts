@@ -40,7 +40,7 @@ export class DefinitionsService {
 
   async deleteDefinition(id: number) {
     const destroy = await this.definitionsRepository.delete(id)
-    if(!destroy) {
+    if(!destroy.affected) {
       throw new NotFoundException({message: 'Definition was not found'})
     }
   }

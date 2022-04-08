@@ -41,8 +41,8 @@ export class StudyMaterialsService {
   }
 
   async delete(id: number) {
-    const sm = await this.smRepository.delete({id})
-    if(!sm) {
+    const destroy = await this.smRepository.delete({id})
+    if(!destroy.affected) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
   }
