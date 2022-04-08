@@ -15,42 +15,42 @@ export class TermsController {
   @ApiResponse({status: 200, type: [Term]})
   @Get()
   getAll() {
-    return this.termsService.getAllDefinitions()
+    return this.termsService.getAll()
   }
 
-  @ApiOperation({summary: 'Получение терминов по языку'})
+  @ApiOperation({summary: 'Получение терминов по языку и разделу'})
   @ApiResponse({status: 200, type: [Term]})
-  @Get('/getByLang/:lang')
-  getByLang(@Param('lang') lang: string) {
-    return this.termsService.getDefinitionsByLang(lang)
+  @Get('/getByParams/:lang/:section')
+  getByLangAndSection(@Param('lang') lang: string, @Param('section') section: string) {
+    return this.termsService.getByLangAndSection(lang, section)
   }
 
   @ApiOperation({summary: 'Получение термина по id'})
   @ApiResponse({status: 200, type: Term})
   @Get('/getById/:id')
   getById(@Param('id') id: string) {
-    return this.termsService.getDefinitionById(Number(id))
+    return this.termsService.getById(Number(id))
   }
 
   @ApiOperation({summary: 'Создание нового термина'})
   @ApiResponse({status: 201, type: Term})
   @Post()
   create(@Body() dto: CreateTermDto) {
-    return this.termsService.createDefinition(dto)
+    return this.termsService.create(dto)
   }
 
   @ApiOperation({summary: 'Обновление существующего термина'})
   @HttpCode(HttpStatus.NO_CONTENT)
   @Put(':id')
   update(@Body() dto: CreateTermDto, @Param('id') id: string) {
-    return this.termsService.updateDefinition(dto, Number(id))
+    return this.termsService.update(dto, Number(id))
   }
 
   @ApiOperation({summary: 'Удаление существующего термина'})
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.termsService.deleteDefinition(Number(id))
+    return this.termsService.delete(Number(id))
   }
 
 }

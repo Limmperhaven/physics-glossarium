@@ -19,11 +19,11 @@ export class StudyMaterialsController {
     return this.smService.getAll()
   }
 
-  @ApiOperation({summary: 'Получение учебных материалов по языку'})
+  @ApiOperation({summary: 'Получение учебных материалов по языку и разделу'})
   @ApiResponse({status: 200, type: [StudyMaterial]})
-  @Get('/getByLang/:lang')
-  getByLang(@Param('lang') lang: string) {
-    return this.smService.getByLang(lang)
+  @Get('/getByParams/:lang/:section')
+  getByLangAndSection(@Param('lang') lang: string, @Param('section') section: string) {
+    return this.smService.getByLangAndSection(lang, section)
   }
 
   @ApiOperation({summary: 'Получение учебного материала по id'})

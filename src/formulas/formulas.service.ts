@@ -15,8 +15,15 @@ export class FormulasService {
     return await this.formulasRepository.find()
   }
 
-  async getByLang(language: string) {
-    return await this.formulasRepository.findBy({language})
+  async getByLangAndSection(language: string, section: string) {
+    if(language !== 'all' && section !== 'all')
+      return await this.formulasRepository.find({where: {language, section}})
+    if(language === 'all' && section !== 'all')
+      return await this.formulasRepository.find({where: {section}})
+    if(language !== 'all' && section === 'all')
+      return await this.formulasRepository.find({where: {language}})
+    if(language === 'all' && section === 'all')
+      return await this.formulasRepository.find()
   }
 
   async getById(id: number) {

@@ -14,42 +14,42 @@ export class DefinitionsController {
   @ApiResponse({status: 200, type: [Definition]})
   @Get()
   getAll() {
-    return this.definitionsService.getAllDefinitions()
+    return this.definitionsService.getAll()
   }
 
-  @ApiOperation({summary: 'Получение определения по языку'})
+  @ApiOperation({summary: 'Получение определения по языку и разделу'})
   @ApiResponse({status: 200, type: [Definition]})
-  @Get('/getByLang/:lang')
-  getByLang(@Param('lang') lang: string) {
-    return this.definitionsService.getDefinitionsByLang(lang)
+  @Get('/getByParams/:lang/:section')
+  getByLangAndSection(@Param('lang') lang: string, @Param('section') section: string) {
+    return this.definitionsService.getByLangAndSection(lang, section)
   }
 
   @ApiOperation({summary: 'Получение определения по id'})
   @ApiResponse({status: 200, type: Definition})
   @Get('/getById/:id')
   getById(@Param('id') id: string) {
-    return this.definitionsService.getDefinitionById(Number(id))
+    return this.definitionsService.getById(Number(id))
   }
 
   @ApiOperation({summary: 'Создание нового определения'})
   @ApiResponse({status: 201, type: [Definition]})
   @Post()
   create(@Body() dto: CreateDefinitionDto) {
-    return this.definitionsService.createDefinition(dto)
+    return this.definitionsService.create(dto)
   }
 
   @ApiOperation({summary: 'Обновление определения по id'})
   @HttpCode(HttpStatus.NO_CONTENT)
   @Put(':id')
   update(@Body() dto: CreateDefinitionDto, @Param('id') id: string) {
-    return this.definitionsService.updateDefinition(dto, Number(id))
+    return this.definitionsService.update(dto, Number(id))
   }
 
   @ApiOperation({summary: 'Удаление определения по id'})
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.definitionsService.deleteDefinition(Number(id))
+    return this.definitionsService.delete(Number(id))
   }
 
 }

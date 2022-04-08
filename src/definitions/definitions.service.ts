@@ -10,15 +10,22 @@ export class DefinitionsService {
 
   constructor(@InjectRepository(Definition) private definitionsRepository: Repository<Definition>) {}
 
-  async getAllDefinitions() {
+  async getAll() {
     return await this.definitionsRepository.find()
   }
 
-  async getDefinitionsByLang(language: string) {
-    return await this.definitionsRepository.findBy({language})
+  async getByLangAndSection(language: string, section: string) {
+    if(language !== 'all' && section !== 'all')
+      return await this.definitionsRepository.find({where: {language, section}})
+    if(language === 'all' && section !== 'all')
+      return await this.definitionsRepository.find({where: {section}})
+    if(language !== 'all' && section === 'all')
+      return await this.definitionsRepository.find({where: {language}})
+    if(language === 'all' && section === 'all')
+      return await this.definitionsRepository.find()
   }
 
-  async getDefinitionById(id: number) {
+  async getById(id: number) {
     const definition = await this.definitionsRepository.findOneBy({id})
     if(!definition) {
       throw new NotFoundException({message: "Definition was not found"})
@@ -26,11 +33,11 @@ export class DefinitionsService {
     return definition
   }
 
-  async createDefinition(dto: CreateDefinitionDto) {
+  async create(dto: CreateDefinitionDto) {
     return await this.definitionsRepository.save(dto)
   }
 
-  async updateDefinition(dto: CreateDefinitionDto, id: number) {
+  async update(dto: CreateDefinitionDto, id: number) {
     const definition = await this.definitionsRepository.findOneBy({id})
     if(!definition) {
       throw new NotFoundException({message: 'Definition was not found'})
@@ -38,7 +45,7 @@ export class DefinitionsService {
     return this.definitionsRepository.save(Object.assign(definition, dto));
   }
 
-  async deleteDefinition(id: number) {
+  async delete(id: number) {
     const destroy = await this.definitionsRepository.delete(id)
     if(!destroy.affected) {
       throw new NotFoundException({message: 'Definition was not found'})

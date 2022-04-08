@@ -15,15 +15,22 @@ export class TermsService {
     return this.termsRepository.create(dto)
   }
 
-  async getAllDefinitions() {
+  async getAll() {
     return await this.termsRepository.find()
   }
 
-  async getDefinitionsByLang(language: string) {
-    return await this.termsRepository.find({where: {language}})
+  async getByLangAndSection(language: string, section: string) {
+    if(language !== 'all' && section !== 'all')
+      return await this.termsRepository.find({where: {language, section}})
+    if(language === 'all' && section !== 'all')
+      return await this.termsRepository.find({where: {section}})
+    if(language !== 'all' && section === 'all')
+      return await this.termsRepository.find({where: {language}})
+    if(language === 'all' && section === 'all')
+      return await this.termsRepository.find()
   }
 
-  async getDefinitionById(id: number) {
+  async getById(id: number) {
     const term = await this.termsRepository.findOneBy({id})
     if(!term) {
       throw new NotFoundException({message: "Definition was not found"})
@@ -31,11 +38,7 @@ export class TermsService {
     return term
   }
 
-  async createDefinition(dto: CreateTermDto) {
-    return await this.termsRepository.save(dto)
-  }
-
-  async updateDefinition(dto: CreateTermDto, id: number) {
+  async update(dto: CreateTermDto, id: number) {
     const term = await this.termsRepository.findOneBy({id})
     if(!term) {
       throw new NotFoundException({message: 'Term was not found'})
@@ -43,7 +46,7 @@ export class TermsService {
     return await this.termsRepository.save(Object.assign(term, dto))
   }
 
-  async deleteDefinition(id: number) {
+  async delete(id: number) {
     const destroy = await this.termsRepository.delete({id})
     if(!destroy.affected) {
       throw new NotFoundException({message: 'Term was not found'})

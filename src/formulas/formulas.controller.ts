@@ -18,11 +18,11 @@ export class FormulasController {
     return this.formulasService.getAll()
   }
 
-  @ApiOperation({summary: 'Получение формул по языку'})
+  @ApiOperation({summary: 'Получение формул по языку и разделу'})
   @ApiResponse({status: 200, type: [Formula]})
-  @Get('/getByLang/:lang')
-  getByLang(@Param('lang') lang: string) {
-    return this.formulasService.getByLang(lang)
+  @Get('/getByParams/:lang/:section')
+  getByLangAndSection(@Param('lang') lang: string, @Param('section') section: string) {
+    return this.formulasService.getByLangAndSection(lang, section)
   }
 
   @ApiOperation({summary: 'Получение формулы по id'})

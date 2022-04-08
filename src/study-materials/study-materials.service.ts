@@ -16,8 +16,15 @@ export class StudyMaterialsService {
     return await this.smRepository.find()
   }
 
-  async getByLang(language: string) {
-    return await this.smRepository.find({where: {language}})
+  async getByLangAndSection(language: string, section: string) {
+    if(language !== 'all' && section !== 'all')
+      return await this.smRepository.find({where: {language, section}})
+    if(language === 'all' && section !== 'all')
+      return await this.smRepository.find({where: {section}})
+    if(language !== 'all' && section === 'all')
+      return await this.smRepository.find({where: {language}})
+    if(language === 'all' && section === 'all')
+      return await this.smRepository.find()
   }
 
   async getById(id: number) {
