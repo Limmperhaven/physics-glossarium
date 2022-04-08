@@ -9,9 +9,13 @@ export class Definition {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ApiProperty({example: 'ExampleName', description: 'Имя определения'})
+  @ApiProperty({example: 'ExampleName', description: 'Имя определения на русском'})
   @Column()
-  name: string
+  name_rus: string
+
+  @ApiProperty({example: 'ExampleName', description: 'Имя определения на языке'})
+  @Column()
+  name_lang: string
 
   @ApiProperty({example: 'ExampleValue', description: 'Тело определения на русском'})
   @Column("text")

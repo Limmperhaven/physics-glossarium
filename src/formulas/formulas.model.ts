@@ -23,11 +23,11 @@ export class Formula {
 
   @ApiProperty({example: 'ExampleComment', description: 'Комментарий на русском'})
   @Column("text", {nullable: true})
-  comment_rus: string
+  comment_rus?: string
 
   @ApiProperty({example: 'ExampleComment', description: 'Комментарий на языке'})
   @Column("text", {nullable: true})
-  comment_lang: string
+  comment_lang?: string
 
   @ApiProperty({example: 'ExampleLanguage', description: 'Язык формулы'})
   @Column()

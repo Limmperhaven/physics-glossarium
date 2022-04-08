@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
 export class CreateFormulaDto {
 
@@ -11,10 +11,10 @@ export class CreateFormulaDto {
   @ApiProperty({example: 'ExampleValue', description: 'Тело формулы'})
   readonly value: string
 
-  @ApiProperty({example: 'ExampleComment', description: 'Комментарий на русском'})
+  @ApiPropertyOptional({example: 'ExampleComment', description: 'Комментарий на русском'})
   readonly comment_rus: string
 
-  @ApiProperty({example: 'ExampleComment', description: 'Комментарий на языке'})
+  @ApiPropertyOptional({example: 'ExampleComment', description: 'Комментарий на языке'})
   readonly comment_lang: string
 
   @ApiProperty({example: 'ExampleLanguage', description: 'Язык формулы'})
