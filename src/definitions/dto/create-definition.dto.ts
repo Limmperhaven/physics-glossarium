@@ -3,7 +3,10 @@ import { ApiProperty } from "@nestjs/swagger";
 export class CreateDefinitionDto {
 
   @ApiProperty({description: "Имя определения", example: 'TestName'})
-  readonly name: string
+  readonly name_rus: string
+
+  @ApiProperty({description: "ExampleName", example: 'TestName'})
+  readonly name_lang: string
 
   @ApiProperty({example: 'ExampleValue', description: 'Тело определения на русском'})
   readonly value_rus: string
