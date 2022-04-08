@@ -22,7 +22,7 @@ export class Task {
   type: number
 
   @ApiProperty({example: ["ExampleAnswer"], description: 'Варианты ответов'})
-  @Column({array: true, nullable: true})
+  @Column("simple-array", {nullable: true})
   answers: string[]
 
   @ApiProperty({example: "ExampleAnswer", description: 'Правильный ответ'})

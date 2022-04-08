@@ -27,7 +27,7 @@ export class DefinitionsService {
   }
 
   async createDefinition(dto: CreateDefinitionDto) {
-    return this.definitionsRepository.create(dto)
+    return await this.definitionsRepository.save(dto)
   }
 
   async updateDefinition(dto: CreateDefinitionDto, id: number) {
@@ -35,7 +35,7 @@ export class DefinitionsService {
     if(!definition) {
       throw new NotFoundException({message: 'Definition was not found'})
     }
-    return this.definitionsRepository.save({id, ...dto});
+    return this.definitionsRepository.save(Object.assign(definition, dto));
   }
 
   async deleteDefinition(id: number) {

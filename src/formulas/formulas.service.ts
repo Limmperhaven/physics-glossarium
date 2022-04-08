@@ -28,7 +28,7 @@ export class FormulasService {
   }
 
   async create(dto: CreateFormulaDto) {
-    return this.formulasRepository.create(dto)
+    return await this.formulasRepository.save(dto)
   }
 
   async update(dto: CreateFormulaDto, id: number) {
@@ -36,7 +36,7 @@ export class FormulasService {
     if(!formula) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
-    return await this.formulasRepository.save({id, ...dto})
+    return await this.formulasRepository.save(Object.assign(formula, dto))
   }
 
   async delete(id: number) {

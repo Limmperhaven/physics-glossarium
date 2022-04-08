@@ -29,7 +29,7 @@ export class StudyMaterialsService {
   }
 
   async create(dto: StudyMaterialDto) {
-    return this.smRepository.create(dto)
+    return await this.smRepository.save(dto)
   }
 
   async update(dto: StudyMaterialDto, id: number) {
@@ -37,7 +37,7 @@ export class StudyMaterialsService {
     if(!sm) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
-    return await this.smRepository.save({id, ...dto})
+    return await this.smRepository.save(Object.assign(sm, dto))
   }
 
   async delete(id: number) {

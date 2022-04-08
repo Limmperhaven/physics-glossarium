@@ -22,7 +22,7 @@ export class TasksService {
       throw new BadRequestException({message: "Field right_answers is required in this type"})
     }
 
-    return this.tasksRepository.create(dto)
+    return await this.tasksRepository.save(dto)
   }
 
   async getAllTemplates() {
@@ -73,16 +73,16 @@ export class TasksService {
   }
 
   async updateTemplate(dto: CreateTaskDto, id: number) {
-    const sm = await this.tasksRepository.findOneBy({id})
-    if(!sm) {
+    const task = await this.tasksRepository.findOneBy({id})
+    if(!task) {
       throw new NotFoundException({message: 'Template was not found'})
     }
-    return await this.tasksRepository.save({id, ...dto})
+    return await this.tasksRepository.save(Object.assign(task, dto))
   }
 
   async deleteTemplate(id: number) {
-    const sm = await this.tasksRepository.delete({id})
-    if(!sm) {
+    const task = await this.tasksRepository.delete({id})
+    if(!task) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
   }

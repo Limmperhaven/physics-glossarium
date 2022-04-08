@@ -32,7 +32,7 @@ export class TermsService {
   }
 
   async createDefinition(dto: CreateTermDto) {
-    return this.termsRepository.create(dto)
+    return await this.termsRepository.save(dto)
   }
 
   async updateDefinition(dto: CreateTermDto, id: number) {
@@ -40,7 +40,7 @@ export class TermsService {
     if(!term) {
       throw new NotFoundException({message: 'Term was not found'})
     }
-    return await this.termsRepository.save({id, ...dto})
+    return await this.termsRepository.save(Object.assign(term, dto))
   }
 
   async deleteDefinition(id: number) {
