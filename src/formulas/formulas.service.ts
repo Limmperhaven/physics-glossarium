@@ -40,8 +40,8 @@ export class FormulasService {
   }
 
   async delete(id: number) {
-    const formula = await this.formulasRepository.delete({id})
-    if(!formula) {
+    const destroy = await this.formulasRepository.delete({id})
+    if(!destroy.affected) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
   }

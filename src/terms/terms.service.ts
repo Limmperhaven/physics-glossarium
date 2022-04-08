@@ -45,7 +45,7 @@ export class TermsService {
 
   async deleteDefinition(id: number) {
     const destroy = await this.termsRepository.delete({id})
-    if(!destroy) {
+    if(!destroy.affected) {
       throw new NotFoundException({message: 'Term was not found'})
     }
   }

@@ -81,8 +81,8 @@ export class TasksService {
   }
 
   async deleteTemplate(id: number) {
-    const task = await this.tasksRepository.delete({id})
-    if(!task) {
+    const destroy = await this.tasksRepository.delete({id})
+    if(!destroy.affected) {
       throw new NotFoundException({message: 'Formula was not found'})
     }
   }
