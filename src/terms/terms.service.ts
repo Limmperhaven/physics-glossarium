@@ -12,7 +12,7 @@ export class TermsService {
   constructor(@InjectRepository(Term) private termsRepository: Repository<Term>) {}
 
   async create(dto: CreateTermDto) {
-    return this.termsRepository.create(dto)
+    return this.termsRepository.save(dto)
   }
 
   async getAll() {
