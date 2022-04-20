@@ -49,9 +49,7 @@ export class TasksService {
   }
 
   async getGeneratedById(id: number) {
-    await this.tasksRepository.findOneBy({id}).then(task =>{
-      return TaskGenerator.generate(task)
-    })
+    return TaskGenerator.generate({...await this.tasksRepository.findOneBy({id})})
   }
 
   async getGeneratedByLangAndSection(language: string, section: string) {
